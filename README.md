@@ -1,21 +1,42 @@
-# bkn-traveler
+# Getting Started - BKN Traveler
+
+### Reference Documentation
+For further reference, please consider the following sections:
+
+* [Docker Container's Architecture Diagram](https://github.com/fernandooliveira19/bookings-architecture-diagram) 
+
+### Dependencies
+
+Dependencies used in this project
 
 
-# Docker commands
+* Actuator
+* Eureka Client
+* Postgres
 
-* Database commands
+### Docker's commands
 
-$ docker pull postgres:12-alpine 
+pull postgres image
 
-$ docker run -p 5433:5432 --name bkn-traveler-pg12 --network bkn-net -e POSTGRES_PASSWORD=Famo2369 -e POSTGRES_DB=db_bkn_traveler postgres:12-alpine
+* $ docker pull postgres:12-alpine
+
+run database image
+
+* $ docker run -p 5433:5432 --name bkn-traveler-pg12 --network bkn-net -e POSTGRES_PASSWORD=Famo2369 -e POSTGRES_DB=db_bkn_traveler postgres:12-alpine
 
 
-* Application commands
+create network
 
-$ cd ../../bkn-traveler
+* $ docker network create bkn-net
 
-$ ./mvnw clean package -DskipTests
+clean and package
 
-$ docker build -t bkn-traveler:v1 .
+* $ .\mvnw clean package -DskipTests
 
-$ docker run -P --network bkn-net bkn-traveler:v1
+build docker image
+
+* $ docker build -t bkn-traveler:v1 .
+
+run docker container
+
+* $ docker run -P --network bkn-net bkn-traveler:v1 
