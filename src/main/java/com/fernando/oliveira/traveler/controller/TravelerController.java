@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
+import com.fernando.oliveira.traveler.domain.mapper.TravelerMapper;
+import com.fernando.oliveira.traveler.domain.request.TravelerRequest;
 import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
-import com.fernando.oliveira.traveler.service.TravelerService;
+import com.fernando.oliveira.traveler.service.impl.TravelerServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +28,7 @@ import io.swagger.annotations.ApiResponses;
 public class TravelerController {
 
 	@Autowired
-	private TravelerService travelerService;
+	private TravelerServiceImpl travelerService;
 	
 	
 	@ApiOperation(value = "Realiza cadastro de viajante")
@@ -37,7 +38,7 @@ public class TravelerController {
 			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
 	@PostMapping
-	public ResponseEntity<TravelerDetailResponse> createTraveler(@RequestBody @Valid CreateTravelerRequest request) {
+	public ResponseEntity<TravelerDetailResponse> createTraveler(@RequestBody @Valid TravelerRequest request) {
 
 		TravelerDetailResponse response = travelerService.createTraveler(request);
 

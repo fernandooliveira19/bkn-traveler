@@ -39,4 +39,4 @@ build docker image
 
 run docker container
 
-* $ docker run -P --network bkn-net bkn-traveler:v1 
+* $ docker run -P -e SERVER_CLOUD_CONFIG_URI=${SERVER_CLOUD_CONFIG_URI} -e SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE} --network bkn-net bkn-traveler:v1 
