@@ -1,34 +1,35 @@
 package com.fernando.oliveira.traveler.controller;
 
-import javax.validation.Valid;
-
+import com.fernando.oliveira.traveler.domain.dto.CreateTravelerRequestDto;
+import com.fernando.oliveira.traveler.domain.dto.TravelerDetailResponseDto;
+import com.fernando.oliveira.traveler.domain.mapper.TravelerMapper;
+import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
+import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
+import com.fernando.oliveira.traveler.service.impl.TravelerServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fernando.oliveira.traveler.domain.mapper.TravelerMapper;
-import com.fernando.oliveira.traveler.domain.request.TravelerRequest;
-import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
-import com.fernando.oliveira.traveler.service.impl.TravelerServiceImpl;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import javax.validation.Valid;
 
 @Api(tags="Traveler endpoint")
 @RestController
-@RequestMapping(value = "/travelers")
+@RequestMapping(value = "/v1/travelers")
 public class TravelerController {
 
 	@Autowired
-	private TravelerServiceImpl travelerService;
+	TravelerServiceImpl service;
+
+	@Autowired
+	TravelerMapper mapper;
 	
 	
 	@ApiOperation(value = "Realiza cadastro de viajante")
@@ -38,27 +39,28 @@ public class TravelerController {
 			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
 	@PostMapping
-	public ResponseEntity<TravelerDetailResponse> createTraveler(@RequestBody @Valid TravelerRequest request) {
+	public ResponseEntity<TravelerDetailResponse> createTraveler(@RequestBody @Valid CreateTravelerRequest request) {
 
-		TravelerDetailResponse response = travelerService.createTraveler(request);
-
+		CreateTravelerRequestDto travelerDto = mapper.createTravelerRequestToDto(request);
+		TravelerDetailResponseDto responseDto = service.createTraveler(travelerDto);
+		TravelerDetailResponse response = mapper.detailResponseDtoToResponse(responseDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
 	}
 
-	@ApiOperation(value = "Realiza busca de viajante pelo identificador")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Viajante retornado com sucesso"),
-			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
-			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
-	@GetMapping("/{id}")
-	public ResponseEntity<TravelerDetailResponse> findById(@PathVariable("id") Long id) {
-
-		TravelerDetailResponse response = travelerService.getById(id);
-
-		return ResponseEntity.status(HttpStatus.OK).body(response);
-
-	}
+//	@ApiOperation(value = "Realiza busca de viajante pelo identificador")
+//	@ApiResponses(value = {
+//			@ApiResponse(code = 200, message = "Viajante retornado com sucesso"),
+//			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
+//			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
+//	@GetMapping("/{id}")
+//	public ResponseEntity<TravelerDetailResponse> findById(@PathVariable("id") Long id) {
+//
+//		TravelerDetailResponse response = travelerService.getById(id);
+//
+//		return ResponseEntity.status(HttpStatus.OK).body(response);
+//
+//	}
 //
 //	@ApiOperation(value = "Realiza busca paginada de todos viajantes cadastrados")
 //	@ApiResponses(value = { 

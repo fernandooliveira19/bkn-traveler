@@ -17,7 +17,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class SwaggerConfig {
 
 	private static final String BASE_PACKAGE = "com.fernando.oliveira.traveler";
-	private static final String REQUEST_MAPPING = "/travelers/**";
+	private static final String REQUEST_MAPPING = "v1/travelers/**";
 	private static final String TITLE = "API de gerenciamento de viajantes";
 	private static final String DESCRIPTION = "API que contém endpoints de cadastro, edição, busca e exclusão de viajantes";
 	private static final String VERSION = "";

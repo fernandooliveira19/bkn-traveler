@@ -1,19 +1,14 @@
 package com.fernando.oliveira.traveler.service;
 
+import com.fernando.oliveira.traveler.domain.dto.CreateTravelerRequestDto;
+import com.fernando.oliveira.traveler.domain.dto.TravelerDetailResponseDto;
+
 import java.util.List;
 
-import com.fernando.oliveira.traveler.domain.request.TravelerRequest;
-import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
-
 public interface TravelerService {
-	
-	public TravelerDetailResponse createTraveler(TravelerRequest request);
-	
-	public TravelerDetailResponse updateTraveler(TravelerRequest request);
-	
-	public TravelerDetailResponse updateStatusTraveler(TravelerRequest request);
-	
-	public List<TravelerDetailResponse> findAllOrderByName();
 
-	public TravelerDetailResponse getById(Long id); 
+	public TravelerDetailResponseDto createTraveler(CreateTravelerRequestDto requestDto) ;
+
+	public List<TravelerDetailResponseDto> findTravelersByNameOrEmail(String name, String email);
+
 }
