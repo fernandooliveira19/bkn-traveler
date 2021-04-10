@@ -1,24 +1,25 @@
 package com.fernando.oliveira.traveler.controller;
 
-import com.fernando.oliveira.traveler.domain.dto.CreateTravelerRequestDto;
-import com.fernando.oliveira.traveler.domain.dto.TravelerDetailResponseDto;
+import com.fernando.oliveira.traveler.domain.entity.Traveler;
 import com.fernando.oliveira.traveler.domain.mapper.TravelerMapper;
 import com.fernando.oliveira.traveler.domain.mother.TravelerMother;
 import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
 import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
 import com.fernando.oliveira.traveler.service.impl.TravelerServiceImpl;
 import org.apache.http.entity.ContentType;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+import java.util.Optional;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,14 +48,15 @@ public class TravelerControllerTest {
 	public void shouldCreateTravelerAndReturnTravelerDetails() throws Exception {
 		
 		CreateTravelerRequest request = TravelerMother.getCreateTravelerRequest();
-		CreateTravelerRequestDto requestDto = TravelerMother.getCreateTravelerRequestDto();
-		TravelerDetailResponseDto responseDto = TravelerMother.getTravelerDetailResponseDto();
-		responseDto.setStatus("A");
+		Traveler travelerToSave = TravelerMother.getTraveler();
+		Traveler travelerSaved = TravelerMother.getTraveler();
+		travelerSaved.setId("1234");
+		travelerSaved.setStatus("A");
 		TravelerDetailResponse response = TravelerMother.getCreateTravelerResponse();
 
-		Mockito.when(mapper.createTravelerRequestToDto(Mockito.any(CreateTravelerRequest.class))).thenReturn(requestDto);
-		Mockito.when(travelerService.createTraveler(Mockito.any(CreateTravelerRequestDto.class))).thenReturn(responseDto);
-		Mockito.when(mapper.detailResponseDtoToResponse(Mockito.any(TravelerDetailResponseDto.class))).thenReturn(response);
+		Mockito.when(mapper.createTravelerRequestToTraveler(Mockito.any(CreateTravelerRequest.class))).thenReturn(travelerToSave);
+		Mockito.when(travelerService.createTraveler(Mockito.any(Traveler.class))).thenReturn(travelerSaved);
+		Mockito.when(mapper.travelerToTravelerDetailResponse(Mockito.any(Traveler.class))).thenReturn(response);
 
 		String requestJson = TravelerMother.getCreateRequestJsonValue(request);
 		mockMvc.perform(post(CREATE_TRAVELER)
@@ -62,6 +64,46 @@ public class TravelerControllerTest {
 				.content(requestJson))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.name").value(response.getName()));
+
+	}
+
+	@Test
+	public void shouldReturnTravelerById() throws Exception {
+
+
+		Traveler travelerSaved = TravelerMother.getTraveler();
+		travelerSaved.setId("1234");
+		travelerSaved.setStatus("A");
+
+		TravelerDetailResponse response = TravelerMother.getDetailTravelerResponse();
+
+		Mockito.when(travelerService.findById("1234")).thenReturn(travelerSaved);
+		Mockito.when(mapper.travelerToTravelerDetailResponse(Mockito.any(Traveler.class))).thenReturn(response);
+
+		mockMvc.perform(get(BASE_MAPPING +"/1234")
+				.header("Content-Type", ContentType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.name").value(response.getName()));
+
+	}
+
+	@Test
+	public void shouldReturnAllTravelers() throws Exception {
+
+
+		Traveler travelerSaved = TravelerMother.getTraveler();
+		travelerSaved.setId("1234");
+		travelerSaved.setStatus("A");
+
+		TravelerDetailResponse response = TravelerMother.getDetailTravelerResponse();
+
+		Mockito.when(travelerService.findAll()).thenReturn(Arrays.asList(travelerSaved));
+		Mockito.when(mapper.travelerToTravelerDetailResponse(Mockito.any(Traveler.class))).thenReturn(response);
+
+		mockMvc.perform(get(BASE_MAPPING )
+				.header("Content-Type", ContentType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].name").value(response.getName()));
 
 	}
 

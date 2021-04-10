@@ -1,41 +1,46 @@
 package com.fernando.oliveira.traveler.service.impl;
 
-import com.fernando.oliveira.traveler.client.TravelerClient;
-import com.fernando.oliveira.traveler.domain.dto.CreateTravelerRequestDto;
-import com.fernando.oliveira.traveler.domain.dto.TravelerDetailResponseDto;
+import com.fernando.oliveira.traveler.domain.entity.Traveler;
 import com.fernando.oliveira.traveler.domain.enums.Status;
+import com.fernando.oliveira.traveler.exception.TravelerNotFoundException;
+import com.fernando.oliveira.traveler.repository.TravelerRepository;
 import com.fernando.oliveira.traveler.service.TravelerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TravelerServiceImpl implements TravelerService{
 
+
 	@Autowired
-	private TravelerClient client;
+	TravelerRepository repository;
 	
 
-	public TravelerDetailResponseDto createTraveler(CreateTravelerRequestDto requestDto) {
+	public Traveler createTraveler(Traveler traveler) {
 		
-		requestDto.setStatus(Status.ACTIVE.getCode());
+		traveler.setStatus(Status.ACTIVE.getCode());
 
-		TravelerDetailResponseDto responseDto = client.createTraveler(requestDto);
+		return repository.save(traveler);
 		
-		return responseDto;
 	}
 
 	@Override
-	public List<TravelerDetailResponseDto> findTravelersByNameOrEmail(String name, String email) {
-		List result = new ArrayList();
-		List<TravelerDetailResponseDto> travelersByName = client.findTravelersByName(name);
-		result.add(travelersByName);
-		List<TravelerDetailResponseDto> travelersByEmail = client.findTravelersByEmail(email);
-		result.add(travelersByEmail);
+	public List<Traveler> findTravelersByNameOrEmail(String name, String email) {
+		return repository.findTravelersByNameOrEmail(name, email);
 
-		return result;
+	}
+
+	@Override
+	public Traveler findById(String id) {
+		return repository.findById(id).orElseThrow();
+	}
+
+	@Override
+	public List<Traveler> findAll() {
+		return repository.findAll();
 	}
 
 }

@@ -18,8 +18,8 @@ public class TravelerDetailResponse implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@ApiModelProperty(name="id", value="Identificador do viajante", example = "1", hidden = true)
-	private Long id;
+	@ApiModelProperty(name="id", value="Identificador do viajante", example = "12345", hidden = true)
+	private String id;
 	@ApiModelProperty(name="name", value="Nome completo do viajante", example="José da Silva")
 	private String name;
 	@ApiModelProperty(name="email", value="Email do viajante", example="jose.silva@gmail.com")

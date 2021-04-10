@@ -1,5 +1,7 @@
 package com.fernando.oliveira.traveler.exception;
 
+import java.util.function.Supplier;
+
 public class TravelerNotFoundException extends RuntimeException {
 
 
@@ -8,4 +10,6 @@ public class TravelerNotFoundException extends RuntimeException {
 	public TravelerNotFoundException (String message) {
 		super(message);
 	}
+
+
 }
