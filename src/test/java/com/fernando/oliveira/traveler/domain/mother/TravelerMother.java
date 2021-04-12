@@ -8,6 +8,9 @@ import com.fernando.oliveira.traveler.domain.entity.Traveler;
 import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
 import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class TravelerMother {
 	
 	private TravelerMother() {
@@ -74,4 +77,17 @@ public class TravelerMother {
 
 		return response;
     }
+    
+    public static List<Traveler> getTravelerList(){
+		Traveler traveler01 = getTraveler();
+		Traveler traveler02 = Traveler.builder()
+				.name("Giovanna")
+		.email("gigiovanna1209@gmail.com")
+		.document("12345")
+				.status("A")
+		.prefixPhone(11).numberPhone("988887777").build();
+
+		return Arrays.asList(traveler01, traveler02);
+		
+	}
 }
