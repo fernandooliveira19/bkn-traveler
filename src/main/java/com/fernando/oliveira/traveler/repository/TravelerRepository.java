@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface TravelerRepository extends MongoRepository<Traveler, String> {
 
-    List<Traveler> findTravelersByNameOrEmail(String name, String email);
+    List<Traveler> findByNameOrEmail(String name, String email);
 }

@@ -58,7 +58,7 @@ public class TravelerServiceTest {
 		String name = "Joao da Silva";
 		String email = "joao.silva@teste.com";
 
-		Mockito.when(repository.findTravelersByNameOrEmail(name, email)).thenReturn(responseList);
+		Mockito.when(repository.findByNameOrEmail(name, email)).thenReturn(responseList);
 
 		List<Traveler> result = service.findTravelersByNameOrEmail(name, email);
 
@@ -110,22 +110,16 @@ public class TravelerServiceTest {
 	@Test
 	public void shouldReturnAllTravelersByNameOrEmail(){
 		Traveler traveler = TravelerMother.getTraveler();
-		traveler.setId("1234");
-		traveler.setStatus("A");
+		String name = "Fernando Augusto";
+		String email = "f19@uol.com.br";
+		Mockito.when(repository.findByNameOrEmail(Mockito.anyString(), Mockito.anyString()))
+				.thenReturn(Arrays.asList(traveler));
 
-		Mockito.when(repository.findAll()).thenReturn(Arrays.asList(traveler));
+		List<Traveler> result = service.findTravelersByNameOrEmail(name, email);
 
-		List<Traveler> result = service.findAll();
-
-		Assertions.assertEquals(traveler.getId(), result.get(0).getId());
 		Assertions.assertEquals(traveler.getName(), result.get(0).getName());
 		Assertions.assertEquals(traveler.getEmail(), result.get(0).getEmail());
-		Assertions.assertEquals(traveler.getStatus(), result.get(0).getStatus());
-		Assertions.assertEquals(traveler.getDocument(), result.get(0).getDocument());
-		Assertions.assertEquals(traveler.getPrefixPhone(), result.get(0).getPrefixPhone());
-		Assertions.assertEquals(traveler.getNumberPhone(), result.get(0).getNumberPhone());
 
 	}
-	
 
 }
