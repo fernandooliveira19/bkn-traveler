@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @ApiModel(value = "Requisição utilizada no cadastro de viajante")
-public class CreateTravelerRequest implements Serializable{
+public class TravelerRequest implements Serializable{
 	
 	/**
 	 * 
@@ -34,6 +34,9 @@ public class CreateTravelerRequest implements Serializable{
 
 	@ApiModelProperty(name="numberPhone", value="Numero do telefone", example = "988887777")
 	private String numberPhone;
+
+	@ApiModelProperty(name="status", value="Status do viajante", example = "<lu><li>A - Ativo</li><li>I - Inativo</li></lu> ")
+	private String status;
 	
 
 }

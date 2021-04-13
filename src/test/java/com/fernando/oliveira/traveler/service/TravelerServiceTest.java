@@ -122,4 +122,31 @@ public class TravelerServiceTest {
 
 	}
 
+	@Test
+	public void shouldUpdateTravelerAndReturnTravelerDetails() {
+
+		Traveler travelerToUpdate = TravelerMother.getTraveler();
+		travelerToUpdate.setStatus("A");
+		travelerToUpdate.setId("123");
+
+		Traveler travelerUpdated = TravelerMother.getTraveler();
+		travelerUpdated.setStatus("A");
+		travelerUpdated.setId("123");
+
+
+		Mockito.when(repository.findById(Mockito.anyString())).thenReturn(Optional.of(travelerToUpdate));
+
+		Traveler result = service.updateTraveler("123",travelerToUpdate);
+
+		Assertions.assertNotNull(result.getId());
+		Assertions.assertEquals(travelerUpdated.getId(),result.getId());
+		Assertions.assertEquals(travelerUpdated.getName(),result.getName() );
+		Assertions.assertEquals(travelerUpdated.getEmail(), result.getEmail() );
+
+		Assertions.assertEquals(travelerUpdated.getStatus(), result.getStatus());
+		Assertions.assertEquals(travelerUpdated.getPrefixPhone(), result.getPrefixPhone());
+		Assertions.assertEquals(travelerUpdated.getNumberPhone(),result.getNumberPhone() );
+
+	}
+
 }

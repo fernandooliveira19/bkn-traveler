@@ -3,7 +3,7 @@ package com.fernando.oliveira.traveler.controller;
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
 import com.fernando.oliveira.traveler.domain.mapper.TravelerMapper;
 import com.fernando.oliveira.traveler.domain.mother.TravelerMother;
-import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
+import com.fernando.oliveira.traveler.domain.request.TravelerRequest;
 import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
 import com.fernando.oliveira.traveler.service.impl.TravelerServiceImpl;
 import org.apache.http.entity.ContentType;
@@ -17,7 +17,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,14 +46,14 @@ public class TravelerControllerTest {
 	@Test
 	public void shouldCreateTravelerAndReturnTravelerDetails() throws Exception {
 		
-		CreateTravelerRequest request = TravelerMother.getCreateTravelerRequest();
+		TravelerRequest request = TravelerMother.getCreateTravelerRequest();
 		Traveler travelerToSave = TravelerMother.getTraveler();
 		Traveler travelerSaved = TravelerMother.getTraveler();
 		travelerSaved.setId("1234");
 		travelerSaved.setStatus("A");
 		TravelerDetailResponse response = TravelerMother.getCreateTravelerResponse();
 
-		Mockito.when(mapper.createTravelerRequestToTraveler(Mockito.any(CreateTravelerRequest.class))).thenReturn(travelerToSave);
+		Mockito.when(mapper.requestToTraveler(Mockito.any(TravelerRequest.class))).thenReturn(travelerToSave);
 		Mockito.when(travelerService.createTraveler(Mockito.any(Traveler.class))).thenReturn(travelerSaved);
 		Mockito.when(mapper.travelerToTravelerDetailResponse(Mockito.any(Traveler.class))).thenReturn(response);
 

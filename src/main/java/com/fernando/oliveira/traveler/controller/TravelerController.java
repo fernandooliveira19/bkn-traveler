@@ -2,7 +2,7 @@ package com.fernando.oliveira.traveler.controller;
 
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
 import com.fernando.oliveira.traveler.domain.mapper.TravelerMapper;
-import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
+import com.fernando.oliveira.traveler.domain.request.TravelerRequest;
 import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
 import com.fernando.oliveira.traveler.service.impl.TravelerServiceImpl;
 import io.swagger.annotations.Api;
@@ -37,9 +37,9 @@ public class TravelerController {
 			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
 	@PostMapping
-	public ResponseEntity<TravelerDetailResponse> createTraveler(@RequestBody @Valid CreateTravelerRequest request) {
+	public ResponseEntity<TravelerDetailResponse> createTraveler(@RequestBody @Valid TravelerRequest request) {
 
-		Traveler traveler = mapper.createTravelerRequestToTraveler(request);
+		Traveler traveler = mapper.requestToTraveler(request);
 		Traveler travelerCreated = service.createTraveler(traveler);
 		TravelerDetailResponse response = mapper.travelerToTravelerDetailResponse(travelerCreated);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -73,6 +73,23 @@ public class TravelerController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 
+	}
+
+	@ApiOperation(value = "Realiza atualização de dados do viajante")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Atualização realizada com sucesso"),
+			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
+			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
+			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
+
+	@PutMapping("/{id}")
+	public ResponseEntity<TravelerDetailResponse> update(@PathVariable("id") String id, @RequestBody TravelerRequest request) {
+
+		Traveler traveler = mapper.requestToTraveler(request);
+		Traveler updatedTraveler = service.updateTraveler(id,traveler);
+		TravelerDetailResponse response = mapper.travelerToTravelerDetailResponse(updatedTraveler);
+
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 //
 //	@ApiOperation(value = "Realiza busca paginada de todos viajantes cadastrados")
@@ -112,23 +129,7 @@ public class TravelerController {
 //	}
 //
 //	
-//	@ApiOperation(value = "Realiza atualização de dados do viajante")
-//	@ApiResponses(value = { 
-//			@ApiResponse(code = 200, message = "Atualização realizada com sucesso"),
-//			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
-//			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
-//			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
-//
-//	@PutMapping("/{id}")
-//	public ResponseEntity<TravelerDTO> update(@PathVariable("id") Long id, @RequestBody TravelerDTO travelerDTO) {
-//
-//		Traveler travelerToUpdate = travelerDTO.convertToTraveler();
-//		travelerToUpdate.setId(id);
-//
-//		Traveler updatedTraveler = travelerService.update(travelerToUpdate);
-//
-//		return ResponseEntity.status(HttpStatus.OK).body(updatedTraveler.convertToDTO());
-//	}
+
 //	
 //	@ApiOperation(value = "Realiza a exclusão de um viajante")
 //	@ApiResponses(value = { 

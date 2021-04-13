@@ -8,7 +8,10 @@ import com.fernando.oliveira.traveler.service.TravelerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TravelerServiceImpl implements TravelerService{
@@ -33,6 +36,18 @@ public class TravelerServiceImpl implements TravelerService{
 
 			if (traveler.getId() == null) {
 				throw new TravelerException("Já existe outro viajante cadastrado com mesmo nome ou email");
+			}else{
+				validateUpdateTraveler(traveler, travelers);
+			}
+		}
+
+	}
+
+	private void validateUpdateTraveler(Traveler traveler, List<Traveler> travelers) {
+
+		for(Traveler t : travelers){
+			if(!t.getId().equals(traveler.getId())){
+				throw new TravelerException("Já existe outro viajante cadastrado com mesmo nome ou email");
 			}
 		}
 
@@ -54,6 +69,21 @@ public class TravelerServiceImpl implements TravelerService{
 	public List<Traveler> findAll() {
 
 		return repository.findAll();
+	}
+
+	@Override
+	public Traveler updateTraveler(String id, Traveler traveler) {
+		Traveler travelerToUpdate  = findById(id);
+		travelerToUpdate.setName(traveler.getName());
+		travelerToUpdate.setEmail(traveler.getEmail());
+		travelerToUpdate.setDocument(traveler.getDocument());
+		travelerToUpdate.setStatus(traveler.getStatus());
+		travelerToUpdate.setPrefixPhone(traveler.getPrefixPhone());
+		travelerToUpdate.setNumberPhone(traveler.getNumberPhone());
+
+		validate(travelerToUpdate);
+
+		return repository.save(travelerToUpdate);
 	}
 
 }

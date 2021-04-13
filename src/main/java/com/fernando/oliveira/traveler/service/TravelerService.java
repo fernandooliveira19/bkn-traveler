@@ -15,4 +15,6 @@ public interface TravelerService {
 	Traveler findById(String id);
 
 	List<Traveler> findAll();
+
+    Traveler updateTraveler(String id, Traveler traveler);
 }
