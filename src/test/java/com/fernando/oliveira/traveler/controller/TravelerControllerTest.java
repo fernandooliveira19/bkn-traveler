@@ -1,5 +1,6 @@
 package com.fernando.oliveira.traveler.controller;
 
+import com.fernando.oliveira.traveler.domain.builder.ExceptionResponseBuilder;
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
 import com.fernando.oliveira.traveler.domain.enums.Status;
 import com.fernando.oliveira.traveler.domain.mapper.TravelerMapper;
@@ -36,13 +37,16 @@ public class TravelerControllerTest {
 	MockMvc mockMvc;
 	
 	@InjectMocks
-	TravelerController controller;
+	private TravelerController controller;
 	
 	@MockBean
-	TravelerServiceImpl travelerService;
+	private TravelerServiceImpl travelerService;
 
 	@MockBean
-	TravelerMapper mapper;
+	private TravelerMapper mapper;
+
+	@MockBean
+	private ExceptionResponseBuilder exceptionResponseBuilder;
 	
 	@Test
 	public void shouldCreateTravelerAndReturnTravelerDetails() throws Exception {
@@ -50,7 +54,7 @@ public class TravelerControllerTest {
 		CreateTravelerRequest request = TravelerMother.getCreateTravelerRequest();
 		Traveler travelerToSave = TravelerMother.getTraveler();
 		Traveler travelerSaved = TravelerMother.getTraveler();
-		travelerSaved.setId(Long.valueOf(1234));
+		travelerSaved.setId(1234L);
 		travelerSaved.setStatus(Status.ACTIVE.getCode());
 		TravelerDetailResponse response = TravelerMother.getCreateTravelerResponse();
 
@@ -70,7 +74,7 @@ public class TravelerControllerTest {
 	@Test
 	public void shouldReturnTravelerById() throws Exception {
 
-		Long id = Long.valueOf(1234);
+		Long id = 1234L;
 
 		Traveler travelerSaved = TravelerMother.getTraveler();
 		travelerSaved.setId(id);
@@ -93,7 +97,7 @@ public class TravelerControllerTest {
 
 
 		Traveler travelerSaved = TravelerMother.getTraveler();
-		travelerSaved.setId(Long.valueOf(1234));
+		travelerSaved.setId(1234L);
 		travelerSaved.setStatus(Status.ACTIVE.getCode());
 
 		TravelerDetailResponse response = TravelerMother.getDetailTravelerResponse();

@@ -18,7 +18,7 @@ public class TravelerMother {
 		
 	}
 	
-	private static final String TRAVELER_ID = "12345";
+	private static final Long TRAVELER_ID = 12345L;
 	private static final String TRAVELER_NAME = "Joao da Silva";
 	private static final String TRAVELER_EMAIL = "joao.silva@teste.com";
 	private static final String TRAVELER_DOCUMENT = "12345678900";
@@ -65,6 +65,18 @@ public class TravelerMother {
 				.document(TRAVELER_DOCUMENT)
 				.prefixPhone(PREFIX_PHONE)
 				.numberPhone(NUMBER_PHONE)
+				.build();
+	}
+
+	public static Traveler getTravelerUpdated(){
+		return Traveler.builder()
+				.id(TRAVELER_ID)
+				.name(TRAVELER_NAME)
+				.email(TRAVELER_EMAIL)
+				.document(TRAVELER_DOCUMENT)
+				.prefixPhone(PREFIX_PHONE)
+				.numberPhone(NUMBER_PHONE)
+				.status(Status.ACTIVE.getCode())
 				.build();
 	}
 

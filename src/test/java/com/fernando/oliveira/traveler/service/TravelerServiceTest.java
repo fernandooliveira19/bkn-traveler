@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.fernando.oliveira.traveler.domain.mother.TravelerMother.getTraveler;
+import static com.fernando.oliveira.traveler.domain.mother.TravelerMother.getTravelerUpdated;
 
 @ExtendWith(MockitoExtension.class)
 public class TravelerServiceTest {
@@ -35,7 +36,7 @@ public class TravelerServiceTest {
 		Traveler travelerToSave = getTraveler();
 		Traveler travelerSaved = getTraveler();
 		travelerSaved.setStatus(Status.ACTIVE.getCode());
-		travelerSaved.setId(Long.valueOf(123));
+		travelerSaved.setId(123L);
 		
 		Mockito.when(repository.save(travelerToSave)).thenReturn(travelerSaved);
 
@@ -70,11 +71,12 @@ public class TravelerServiceTest {
 
 	@Test
 	public void shouldReturnTravelerById(){
+		Long id = 1234L;
 		Traveler traveler = getTraveler();
-		traveler.setId(Long.valueOf(1234));
+		traveler.setId(id);
 		traveler.setStatus(Status.ACTIVE.getCode());
 
-		Long id = Long.valueOf(1234);
+
 		Mockito.when(repository.findById(id)).thenReturn(Optional.of(traveler));
 
 		Traveler result = travelerService.findById(id);
@@ -92,7 +94,7 @@ public class TravelerServiceTest {
 	@Test
 	public void shouldReturnAllTravelers(){
 		Traveler traveler = getTraveler();
-		traveler.setId(Long.valueOf(1234));
+		traveler.setId(1234L);
 		traveler.setStatus(Status.ACTIVE.getCode());
 
 		Mockito.when(repository.findAll()).thenReturn(Arrays.asList(traveler));
@@ -127,17 +129,16 @@ public class TravelerServiceTest {
 	@Test
 	public void shouldUpdateTravelerAndReturnTravelerDetails() {
 
-		Long id = Long.valueOf(123);
+		Long id = 123L;
 		Traveler travelerToUpdate = getTraveler();
 		travelerToUpdate.setStatus(Status.ACTIVE.getCode());
 		travelerToUpdate.setId(id);
 
-		Traveler travelerUpdated = getTraveler();
-		travelerUpdated.setStatus(Status.ACTIVE.getCode());
-		travelerUpdated.setId(id);
+		Traveler travelerUpdated = getTravelerUpdated();
 
 
 		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(travelerToUpdate));
+		Mockito.when(repository.save(Mockito.any(Traveler.class))).thenReturn(travelerUpdated);
 
 		Traveler result = travelerService.updateTraveler(id,travelerToUpdate);
 
