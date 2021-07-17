@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TravelerException.class)
     public ResponseEntity<ExceptionResponse> handleBusinessException(TravelerException exception){
         ExceptionResponse exceptionResponse = responseBuilder.getBusinessException(exception);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(exceptionResponse);
     }
 
 }

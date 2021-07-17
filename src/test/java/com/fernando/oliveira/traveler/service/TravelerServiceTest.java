@@ -3,6 +3,7 @@ package com.fernando.oliveira.traveler.service;
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
 import com.fernando.oliveira.traveler.domain.enums.Status;
 import com.fernando.oliveira.traveler.domain.mother.TravelerMother;
+import com.fernando.oliveira.traveler.exception.TravelerException;
 import com.fernando.oliveira.traveler.repository.TravelerRepository;
 import com.fernando.oliveira.traveler.service.impl.TravelerServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +20,8 @@ import java.util.Optional;
 
 import static com.fernando.oliveira.traveler.domain.mother.TravelerMother.getTraveler;
 import static com.fernando.oliveira.traveler.domain.mother.TravelerMother.getTravelerUpdated;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class TravelerServiceTest {
@@ -38,18 +41,18 @@ public class TravelerServiceTest {
 		travelerSaved.setStatus(Status.ACTIVE.getCode());
 		travelerSaved.setId(123L);
 		
-		Mockito.when(repository.save(travelerToSave)).thenReturn(travelerSaved);
+		when(repository.save(travelerToSave)).thenReturn(travelerSaved);
 
 		Traveler result = travelerService.createTraveler(travelerToSave);
 
-		Assertions.assertNotNull(result.getId());
-		Assertions.assertEquals(travelerSaved.getId(),result.getId());
-		Assertions.assertEquals(travelerToSave.getName(),result.getName() );
-		Assertions.assertEquals(travelerToSave.getEmail(), result.getEmail() );
+		assertNotNull(result.getId());
+		assertEquals(travelerSaved.getId(),result.getId());
+		assertEquals(travelerToSave.getName(),result.getName() );
+		assertEquals(travelerToSave.getEmail(), result.getEmail() );
 
-		Assertions.assertEquals(Status.ACTIVE.getCode(), result.getStatus());
-		Assertions.assertEquals(travelerToSave.getPrefixPhone(), result.getPrefixPhone());
-		Assertions.assertEquals(travelerToSave.getNumberPhone(),result.getNumberPhone() );
+		assertEquals(Status.ACTIVE.getCode(), result.getStatus());
+		assertEquals(travelerToSave.getPrefixPhone(), result.getPrefixPhone());
+		assertEquals(travelerToSave.getNumberPhone(),result.getNumberPhone() );
 		
 	}
 
@@ -61,11 +64,11 @@ public class TravelerServiceTest {
 		String name = "Joao da Silva";
 		String email = "joao.silva@teste.com";
 
-		Mockito.when(repository.findByNameOrEmail(name, email)).thenReturn(responseList);
+		when(repository.findByNameOrEmail(name, email)).thenReturn(responseList);
 
 		List<Traveler> result = travelerService.findTravelersByNameOrEmail(name, email);
 
-		Assertions.assertFalse(result.isEmpty());
+		assertFalse(result.isEmpty());
 
 	}
 
@@ -77,17 +80,17 @@ public class TravelerServiceTest {
 		traveler.setStatus(Status.ACTIVE.getCode());
 
 
-		Mockito.when(repository.findById(id)).thenReturn(Optional.of(traveler));
+		when(repository.findById(id)).thenReturn(Optional.of(traveler));
 
 		Traveler result = travelerService.findById(id);
 
-		Assertions.assertEquals(traveler.getId(), result.getId());
-		Assertions.assertEquals(traveler.getName(), result.getName());
-		Assertions.assertEquals(traveler.getEmail(), result.getEmail());
-		Assertions.assertEquals(traveler.getStatus(), result.getStatus());
-		Assertions.assertEquals(traveler.getDocument(), result.getDocument());
-		Assertions.assertEquals(traveler.getPrefixPhone(), result.getPrefixPhone());
-		Assertions.assertEquals(traveler.getNumberPhone(), result.getNumberPhone());
+		assertEquals(traveler.getId(), result.getId());
+		assertEquals(traveler.getName(), result.getName());
+		assertEquals(traveler.getEmail(), result.getEmail());
+		assertEquals(traveler.getStatus(), result.getStatus());
+		assertEquals(traveler.getDocument(), result.getDocument());
+		assertEquals(traveler.getPrefixPhone(), result.getPrefixPhone());
+		assertEquals(traveler.getNumberPhone(), result.getNumberPhone());
 
 	}
 
@@ -97,17 +100,17 @@ public class TravelerServiceTest {
 		traveler.setId(1234L);
 		traveler.setStatus(Status.ACTIVE.getCode());
 
-		Mockito.when(repository.findAll()).thenReturn(Arrays.asList(traveler));
+		when(repository.findAll()).thenReturn(Arrays.asList(traveler));
 
 		List<Traveler> result = travelerService.findAll();
 
-		Assertions.assertEquals(traveler.getId(), result.get(0).getId());
-		Assertions.assertEquals(traveler.getName(), result.get(0).getName());
-		Assertions.assertEquals(traveler.getEmail(), result.get(0).getEmail());
-		Assertions.assertEquals(traveler.getStatus(), result.get(0).getStatus());
-		Assertions.assertEquals(traveler.getDocument(), result.get(0).getDocument());
-		Assertions.assertEquals(traveler.getPrefixPhone(), result.get(0).getPrefixPhone());
-		Assertions.assertEquals(traveler.getNumberPhone(), result.get(0).getNumberPhone());
+		assertEquals(traveler.getId(), result.get(0).getId());
+		assertEquals(traveler.getName(), result.get(0).getName());
+		assertEquals(traveler.getEmail(), result.get(0).getEmail());
+		assertEquals(traveler.getStatus(), result.get(0).getStatus());
+		assertEquals(traveler.getDocument(), result.get(0).getDocument());
+		assertEquals(traveler.getPrefixPhone(), result.get(0).getPrefixPhone());
+		assertEquals(traveler.getNumberPhone(), result.get(0).getNumberPhone());
 
 	}
 
@@ -116,13 +119,13 @@ public class TravelerServiceTest {
 		Traveler traveler = getTraveler();
 		String name = "Fernando Augusto";
 		String email = "f19@uol.com.br";
-		Mockito.when(repository.findByNameOrEmail(Mockito.anyString(), Mockito.anyString()))
+		when(repository.findByNameOrEmail(Mockito.anyString(), Mockito.anyString()))
 				.thenReturn(Arrays.asList(traveler));
 
 		List<Traveler> result = travelerService.findTravelersByNameOrEmail(name, email);
 
-		Assertions.assertEquals(traveler.getName(), result.get(0).getName());
-		Assertions.assertEquals(traveler.getEmail(), result.get(0).getEmail());
+		assertEquals(traveler.getName(), result.get(0).getName());
+		assertEquals(traveler.getEmail(), result.get(0).getEmail());
 
 	}
 
@@ -137,20 +140,39 @@ public class TravelerServiceTest {
 		Traveler travelerUpdated = getTravelerUpdated();
 
 
-		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(travelerToUpdate));
-		Mockito.when(repository.save(Mockito.any(Traveler.class))).thenReturn(travelerUpdated);
+		when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(travelerToUpdate));
+		when(repository.save(Mockito.any(Traveler.class))).thenReturn(travelerUpdated);
 
 		Traveler result = travelerService.updateTraveler(id,travelerToUpdate);
 
-		Assertions.assertNotNull(result.getId());
-		Assertions.assertEquals(travelerUpdated.getId(),result.getId());
-		Assertions.assertEquals(travelerUpdated.getName(),result.getName() );
-		Assertions.assertEquals(travelerUpdated.getEmail(), result.getEmail() );
+		assertNotNull(result.getId());
+		assertEquals(travelerUpdated.getId(),result.getId());
+		assertEquals(travelerUpdated.getName(),result.getName() );
+		assertEquals(travelerUpdated.getEmail(), result.getEmail() );
 
-		Assertions.assertEquals(travelerUpdated.getStatus(), result.getStatus());
-		Assertions.assertEquals(travelerUpdated.getPrefixPhone(), result.getPrefixPhone());
-		Assertions.assertEquals(travelerUpdated.getNumberPhone(),result.getNumberPhone() );
+		assertEquals(travelerUpdated.getStatus(), result.getStatus());
+		assertEquals(travelerUpdated.getPrefixPhone(), result.getPrefixPhone());
+		assertEquals(travelerUpdated.getNumberPhone(),result.getNumberPhone() );
 
 	}
+
+
+	@Test
+	public void shouldReturnMessageExceptionWhenTravelerNotFoundById() {
+
+		Long id = 123L;
+
+		when(repository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+		Exception exception = assertThrows(TravelerException.class, () ->{
+			travelerService.findById(id);
+		});
+
+		assertEquals(exception.getMessage(), "Nenhum viajante encontrado pelo id: " + id);
+
+
+	}
+
+
 
 }

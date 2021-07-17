@@ -62,7 +62,8 @@ public class TravelerServiceImpl implements TravelerService {
 
     @Override
     public Traveler findById(Long id) {
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id)
+                .orElseThrow(() -> new TravelerException("Nenhum viajante encontrado pelo id: " + id));
     }
 
     @Override

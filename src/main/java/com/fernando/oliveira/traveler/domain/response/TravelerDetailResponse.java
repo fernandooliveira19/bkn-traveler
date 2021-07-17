@@ -30,7 +30,7 @@ public class TravelerDetailResponse implements Serializable{
 	private Integer prefixPhone;
 	@ApiModelProperty(name="numberPhone", value="Numero do telefone", example = "98888-7777")
 	private String numberPhone;
-	@ApiModelProperty(name="status", value="Status do viajante", example = "<li><lu>A - Ativo</lu><lu>I - Inativo</lu></li>")
+	@ApiModelProperty(name="status", value="Status do viajante", example = "<ul><li>A - Ativo</li><li>I - Inativo</li></ul>")
 	private String status;
 
 }
