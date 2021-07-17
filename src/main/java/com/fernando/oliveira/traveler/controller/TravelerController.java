@@ -2,9 +2,9 @@ package com.fernando.oliveira.traveler.controller;
 
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
 import com.fernando.oliveira.traveler.domain.mapper.TravelerMapper;
-import com.fernando.oliveira.traveler.domain.request.TravelerRequest;
+import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
 import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
-import com.fernando.oliveira.traveler.service.impl.TravelerServiceImpl;
+import com.fernando.oliveira.traveler.service.TravelerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 public class TravelerController {
 
 	@Autowired
-	TravelerServiceImpl service;
+	private TravelerService service;
 
 	@Autowired
-	TravelerMapper mapper;
+	private TravelerMapper mapper;
 	
 	
 	@ApiOperation(value = "Realiza cadastro de viajante")
@@ -37,12 +37,11 @@ public class TravelerController {
 			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
 	@PostMapping
-	public ResponseEntity<TravelerDetailResponse> createTraveler(@RequestBody @Valid TravelerRequest request) {
+	public ResponseEntity<TravelerDetailResponse> createTraveler(@RequestBody @Valid CreateTravelerRequest request) {
 
-		Traveler traveler = mapper.requestToTraveler(request);
-		Traveler travelerCreated = service.createTraveler(traveler);
-		TravelerDetailResponse response = mapper.travelerToTravelerDetailResponse(travelerCreated);
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		Traveler travelerCreated = service.createTraveler(mapper.requestToCreateTraveler(request));
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(mapper.travelerToTravelerDetailResponse(travelerCreated));
 
 	}
 
@@ -52,12 +51,11 @@ public class TravelerController {
 			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
 	@GetMapping("/{id}")
-	public ResponseEntity<TravelerDetailResponse> findById(@PathVariable("id") String id) {
+	public ResponseEntity<TravelerDetailResponse> findById(@PathVariable("id") Long id) {
 
 		Traveler result = service.findById(id);
-		TravelerDetailResponse response = mapper.travelerToTravelerDetailResponse(result);
 
-		return ResponseEntity.status(HttpStatus.OK).body(response);
+		return ResponseEntity.status(HttpStatus.OK).body(mapper.travelerToTravelerDetailResponse(result));
 
 	}
 	@ApiOperation(value = "Realiza busca de todos viajantes")
@@ -83,9 +81,9 @@ public class TravelerController {
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
 
 	@PutMapping("/{id}")
-	public ResponseEntity<TravelerDetailResponse> update(@PathVariable("id") String id, @RequestBody TravelerRequest request) {
+	public ResponseEntity<TravelerDetailResponse> update(@PathVariable("id") Long id, @RequestBody CreateTravelerRequest request) {
 
-		Traveler traveler = mapper.requestToTraveler(request);
+		Traveler traveler = mapper.requestToCreateTraveler(request);
 		Traveler updatedTraveler = service.updateTraveler(id,traveler);
 		TravelerDetailResponse response = mapper.travelerToTravelerDetailResponse(updatedTraveler);
 

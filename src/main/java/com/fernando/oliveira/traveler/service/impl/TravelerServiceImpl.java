@@ -14,76 +14,76 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TravelerServiceImpl implements TravelerService{
+public class TravelerServiceImpl implements TravelerService {
 
 
-	@Autowired
-	TravelerRepository repository;
-	
+    @Autowired
+    private TravelerRepository repository;
 
-	public Traveler createTraveler(Traveler traveler) {
-		validate(traveler);
-		traveler.setStatus(Status.ACTIVE.getCode());
 
-		return repository.save(traveler);
-		
-	}
+    public Traveler createTraveler(Traveler traveler) {
+        validate(traveler);
+        traveler.setStatus(Status.ACTIVE.getCode());
 
-	private void validate(Traveler traveler) {
-		List<Traveler> travelers = findTravelersByNameOrEmail(traveler.getName(), traveler.getEmail());
+        return repository.save(traveler);
 
-		if(!travelers.isEmpty()) {
+    }
 
-			if (traveler.getId() == null) {
-				throw new TravelerException("Já existe outro viajante cadastrado com mesmo nome ou email");
-			}else{
-				validateUpdateTraveler(traveler, travelers);
-			}
-		}
+    private void validate(Traveler traveler) {
+        List<Traveler> travelers = findTravelersByNameOrEmail(traveler.getName(), traveler.getEmail());
 
-	}
+        if (!travelers.isEmpty()) {
 
-	private void validateUpdateTraveler(Traveler traveler, List<Traveler> travelers) {
+            if (traveler.getId() == null) {
+                throw new TravelerException("Já existe outro viajante cadastrado com mesmo nome ou email");
+            } else {
+                validateUpdateTraveler(traveler, travelers);
+            }
+        }
 
-		for(Traveler t : travelers){
-			if(!t.getId().equals(traveler.getId())){
-				throw new TravelerException("Já existe outro viajante cadastrado com mesmo nome ou email");
-			}
-		}
+    }
 
-	}
+    private void validateUpdateTraveler(Traveler traveler, List<Traveler> travelers) {
 
-	@Override
-	public List<Traveler> findTravelersByNameOrEmail(String name, String email) {
+        for (Traveler t : travelers) {
+            if (!t.getId().equals(traveler.getId())) {
+                throw new TravelerException("Já existe outro viajante cadastrado com mesmo nome ou email");
+            }
+        }
 
-		return repository.findByNameOrEmail(name, email);
+    }
 
-	}
+    @Override
+    public List<Traveler> findTravelersByNameOrEmail(String name, String email) {
 
-	@Override
-	public Traveler findById(String id) {
-		return repository.findById(id).orElseThrow();
-	}
+        return repository.findByNameOrEmail(name, email);
 
-	@Override
-	public List<Traveler> findAll() {
+    }
 
-		return repository.findAll();
-	}
+    @Override
+    public Traveler findById(Long id) {
+        return repository.findById(id).orElseThrow();
+    }
 
-	@Override
-	public Traveler updateTraveler(String id, Traveler traveler) {
-		Traveler travelerToUpdate  = findById(id);
-		travelerToUpdate.setName(traveler.getName());
-		travelerToUpdate.setEmail(traveler.getEmail());
-		travelerToUpdate.setDocument(traveler.getDocument());
-		travelerToUpdate.setStatus(traveler.getStatus());
-		travelerToUpdate.setPrefixPhone(traveler.getPrefixPhone());
-		travelerToUpdate.setNumberPhone(traveler.getNumberPhone());
+    @Override
+    public List<Traveler> findAll() {
 
-		validate(travelerToUpdate);
+        return repository.findAll();
+    }
 
-		return repository.save(travelerToUpdate);
-	}
+    @Override
+    public Traveler updateTraveler(Long id, Traveler traveler) {
+        Traveler travelerToUpdate = findById(id);
+        travelerToUpdate.setName(traveler.getName());
+        travelerToUpdate.setEmail(traveler.getEmail());
+        travelerToUpdate.setDocument(traveler.getDocument());
+        travelerToUpdate.setStatus(traveler.getStatus());
+        travelerToUpdate.setPrefixPhone(traveler.getPrefixPhone());
+        travelerToUpdate.setNumberPhone(traveler.getNumberPhone());
+
+        validate(travelerToUpdate);
+
+        return repository.save(travelerToUpdate);
+    }
 
 }

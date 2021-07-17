@@ -12,9 +12,9 @@ public interface TravelerService {
 
 	List<Traveler> findTravelersByNameOrEmail(String name, String email);
 
-	Traveler findById(String id);
+	Traveler findById(Long id);
 
 	List<Traveler> findAll();
 
-    Traveler updateTraveler(String id, Traveler traveler);
+    Traveler updateTraveler(Long id, Traveler traveler);
 }

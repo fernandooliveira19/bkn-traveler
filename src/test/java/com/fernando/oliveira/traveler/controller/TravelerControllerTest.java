@@ -1,9 +1,10 @@
 package com.fernando.oliveira.traveler.controller;
 
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
+import com.fernando.oliveira.traveler.domain.enums.Status;
 import com.fernando.oliveira.traveler.domain.mapper.TravelerMapper;
 import com.fernando.oliveira.traveler.domain.mother.TravelerMother;
-import com.fernando.oliveira.traveler.domain.request.TravelerRequest;
+import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
 import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
 import com.fernando.oliveira.traveler.service.impl.TravelerServiceImpl;
 import org.apache.http.entity.ContentType;
@@ -46,14 +47,14 @@ public class TravelerControllerTest {
 	@Test
 	public void shouldCreateTravelerAndReturnTravelerDetails() throws Exception {
 		
-		TravelerRequest request = TravelerMother.getCreateTravelerRequest();
+		CreateTravelerRequest request = TravelerMother.getCreateTravelerRequest();
 		Traveler travelerToSave = TravelerMother.getTraveler();
 		Traveler travelerSaved = TravelerMother.getTraveler();
-		travelerSaved.setId("1234");
-		travelerSaved.setStatus("A");
+		travelerSaved.setId(Long.valueOf(1234));
+		travelerSaved.setStatus(Status.ACTIVE.getCode());
 		TravelerDetailResponse response = TravelerMother.getCreateTravelerResponse();
 
-		Mockito.when(mapper.requestToTraveler(Mockito.any(TravelerRequest.class))).thenReturn(travelerToSave);
+		Mockito.when(mapper.requestToCreateTraveler(Mockito.any(CreateTravelerRequest.class))).thenReturn(travelerToSave);
 		Mockito.when(travelerService.createTraveler(Mockito.any(Traveler.class))).thenReturn(travelerSaved);
 		Mockito.when(mapper.travelerToTravelerDetailResponse(Mockito.any(Traveler.class))).thenReturn(response);
 
@@ -69,14 +70,15 @@ public class TravelerControllerTest {
 	@Test
 	public void shouldReturnTravelerById() throws Exception {
 
+		Long id = Long.valueOf(1234);
 
 		Traveler travelerSaved = TravelerMother.getTraveler();
-		travelerSaved.setId("1234");
-		travelerSaved.setStatus("A");
+		travelerSaved.setId(id);
+		travelerSaved.setStatus(Status.ACTIVE.getCode());
 
 		TravelerDetailResponse response = TravelerMother.getDetailTravelerResponse();
 
-		Mockito.when(travelerService.findById("1234")).thenReturn(travelerSaved);
+		Mockito.when(travelerService.findById(id)).thenReturn(travelerSaved);
 		Mockito.when(mapper.travelerToTravelerDetailResponse(Mockito.any(Traveler.class))).thenReturn(response);
 
 		mockMvc.perform(get(BASE_MAPPING +"/1234")
@@ -91,8 +93,8 @@ public class TravelerControllerTest {
 
 
 		Traveler travelerSaved = TravelerMother.getTraveler();
-		travelerSaved.setId("1234");
-		travelerSaved.setStatus("A");
+		travelerSaved.setId(Long.valueOf(1234));
+		travelerSaved.setStatus(Status.ACTIVE.getCode());
 
 		TravelerDetailResponse response = TravelerMother.getDetailTravelerResponse();
 

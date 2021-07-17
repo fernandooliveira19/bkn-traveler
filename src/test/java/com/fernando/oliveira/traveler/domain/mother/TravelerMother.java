@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
-import com.fernando.oliveira.traveler.domain.request.TravelerRequest;
+import com.fernando.oliveira.traveler.domain.enums.Status;
+import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
 import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
 
 import java.util.Arrays;
@@ -26,8 +27,8 @@ public class TravelerMother {
 	private static final Integer PREFIX_PHONE= 11;
 	private static final String NUMBER_PHONE = "98888-7777";
 	
-	public static TravelerRequest getCreateTravelerRequest() {
-		TravelerRequest request = new TravelerRequest();
+	public static CreateTravelerRequest getCreateTravelerRequest() {
+		CreateTravelerRequest request = new CreateTravelerRequest();
 		request.setName(TRAVELER_NAME);
 		request.setEmail(TRAVELER_EMAIL);
 		request.setPrefixPhone(PREFIX_PHONE);
@@ -50,7 +51,7 @@ public class TravelerMother {
 			
 	}
 
-    public static String getCreateRequestJsonValue(TravelerRequest request) throws JsonProcessingException {
+    public static String getCreateRequestJsonValue(CreateTravelerRequest request) throws JsonProcessingException {
 	    ObjectMapper mapper = new ObjectMapper();
 	    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
@@ -84,8 +85,9 @@ public class TravelerMother {
 				.name("Giovanna")
 		.email("gigiovanna1209@gmail.com")
 		.document("12345")
-				.status("A")
-		.prefixPhone(11).numberPhone("988887777").build();
+				.status(Status.ACTIVE.getCode())
+		.prefixPhone(11)
+				.numberPhone("988887777").build();
 
 		return Arrays.asList(traveler01, traveler02);
 		
