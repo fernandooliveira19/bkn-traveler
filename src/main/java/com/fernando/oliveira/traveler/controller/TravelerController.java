@@ -3,6 +3,7 @@ package com.fernando.oliveira.traveler.controller;
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
 import com.fernando.oliveira.traveler.domain.mapper.TravelerMapper;
 import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
+import com.fernando.oliveira.traveler.domain.request.UpdateTravelerRequest;
 import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
 import com.fernando.oliveira.traveler.service.TravelerService;
 import io.swagger.annotations.Api;
@@ -81,9 +82,9 @@ public class TravelerController {
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
 
 	@PutMapping("/{id}")
-	public ResponseEntity<TravelerDetailResponse> update(@PathVariable("id") Long id, @RequestBody CreateTravelerRequest request) {
+	public ResponseEntity<TravelerDetailResponse> update(@PathVariable("id") Long id, @RequestBody UpdateTravelerRequest request) {
 
-		Traveler traveler = mapper.requestToCreateTraveler(request);
+		Traveler traveler = mapper.requestToUpdateTraveler(request);
 		Traveler updatedTraveler = service.updateTraveler(id,traveler);
 		TravelerDetailResponse response = mapper.travelerToTravelerDetailResponse(updatedTraveler);
 
