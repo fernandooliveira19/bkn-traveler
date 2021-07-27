@@ -1,10 +1,13 @@
 package com.fernando.oliveira.traveler.domain.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fernando.oliveira.traveler.exception.ObjectError;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
@@ -14,4 +17,7 @@ public class ExceptionResponse {
     private LocalDateTime timestamp;
 
     private String message;
+
+    @JsonInclude(JsonInclude.Include.NON_ABSENT)
+    private List<ObjectError> errorList;
 }

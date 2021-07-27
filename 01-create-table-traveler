@@ -1,0 +1,16 @@
+-- public.traveler definition
+
+-- Drop table
+
+-- DROP TABLE public.traveler;
+
+CREATE TABLE public.traveler (
+	id bigserial NOT NULL,
+	"document" varchar(255) NULL,
+	email varchar(255) NOT NULL,
+	name varchar(255) NOT NULL,
+	number_phone varchar(255) NOT NULL,
+	prefix_phone int4 NOT NULL,
+	status varchar(255) NOT NULL,
+	CONSTRAINT traveler_pkey PRIMARY KEY (id)
+);

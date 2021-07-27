@@ -2,11 +2,14 @@ package com.fernando.oliveira.traveler.domain.request;
 
 import java.io.Serializable;
 
+import com.fernando.oliveira.traveler.validation.Cpf;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -18,17 +21,33 @@ public class UpdateTravelerRequest implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(name="id", value="Identificador do viajante", example="1", hidden = true)
-	private Long id;
-	@ApiModelProperty(name="travelerName", value="Nome completo do viajante", example="José da Silva")
-	private String travelerName;
-	@ApiModelProperty(name="travelerEmail", value="Email do viajante", example="jose.silva@gmail.com")
-	private String travelerEmail;
-	@ApiModelProperty(name="prefixPhone", value="Prefixo do telefone", example = "11")
+
+	@ApiModelProperty(name="name", value="Nome completo do viajante", example="José da Silva", required = true)
+	@NotBlank(message = "Nome é obrigatório")
+	@Size(min = 5, max = 250, message = "Nome inválido")
+	@Pattern(regexp = "^[A-ú]+\\s[A-ú]+(\\s[A-ú]+)*", message = "Sobrenome é obrigatório")
+	private String name;
+
+	@ApiModelProperty(name="email", value="Email do viajante", example="jose.silva@gmail.com", required = true)
+	@Email
+	@NotBlank(message = "Email é obrigatório")
+	private String email;
+
+	@ApiModelProperty(name="document", value="Documento do viajante", example="12345678910")
+	@Cpf(message = "Cpf inválido")
+	private String document;
+
+	@ApiModelProperty(name="prefixPhone", value="Prefixo do telefone", example = "11", required = true)
+	@NotNull(message = "DDD é obrigatório")
 	private Integer prefixPhone;
-	@ApiModelProperty(name="numberPhone", value="Numero do telefone", example = "98888-7777")
+
+	@ApiModelProperty(name="numberPhone", value="Numero do telefone", example = "988887777", required = true)
+	@Size(min=8, max = 9, message = "Telefone inválido")
+	@NotBlank(message = "Telefone é obrigatório")
 	private String numberPhone;
-	
+
+	@ApiModelProperty(name="status", value="Situação do viajante", example = "A", required = true)
+	@NotBlank(message = "Status é obrigatório")
+	private String status;
 
 }
