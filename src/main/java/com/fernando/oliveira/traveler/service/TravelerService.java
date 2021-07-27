@@ -17,4 +17,6 @@ public interface TravelerService {
 	List<Traveler> findAll();
 
     Traveler updateTraveler(Long id, Traveler traveler);
+
+	List<Traveler> findByNameContainingOrderByNameAsc(String name);
 }

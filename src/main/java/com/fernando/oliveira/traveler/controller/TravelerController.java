@@ -25,24 +25,24 @@ import java.util.stream.Collectors;
 public class TravelerController {
 
 	@Autowired
-	private TravelerService service;
+	private TravelerService travelerService;
 
 	@Autowired
-	private TravelerMapper mapper;
-	
-	
+	private TravelerMapper travelerMapper;
+
+
 	@ApiOperation(value = "Realiza cadastro de viajante")
-	@ApiResponses(value = { 
+	@ApiResponses(value = {
 			@ApiResponse(code = 201, message = "Viajante cadastrado com sucesso"),
 			@ApiResponse(code = 400, message = "Dados de cadastro inválidos"),
 			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
-			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
+			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
 	@PostMapping
 	public ResponseEntity<TravelerDetailResponse> createTraveler(@RequestBody @Valid CreateTravelerRequest request) {
 
-		Traveler travelerCreated = service.createTraveler(mapper.requestToCreateTraveler(request));
+		Traveler travelerCreated = travelerService.createTraveler(travelerMapper.requestToCreateTraveler(request));
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(mapper.travelerToTravelerDetailResponse(travelerCreated));
+		return ResponseEntity.status(HttpStatus.CREATED).body(travelerMapper.travelerToTravelerDetailResponse(travelerCreated));
 
 	}
 
@@ -50,25 +50,26 @@ public class TravelerController {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Viajante retornado com sucesso"),
 			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
-			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
+			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
 	@GetMapping("/{id}")
 	public ResponseEntity<TravelerDetailResponse> findById(@PathVariable("id") Long id) {
 
-		Traveler result = service.findById(id);
+		Traveler result = travelerService.findById(id);
 
-		return ResponseEntity.status(HttpStatus.OK).body(mapper.travelerToTravelerDetailResponse(result));
+		return ResponseEntity.status(HttpStatus.OK).body(travelerMapper.travelerToTravelerDetailResponse(result));
 
 	}
+
 	@ApiOperation(value = "Realiza busca de todos viajantes")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Viajante retornado com sucesso"),
 			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
-			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
+			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
 	@GetMapping
 	public ResponseEntity<List<TravelerDetailResponse>> findAll() {
 
-		List<Traveler> result = service.findAll();
-		List<TravelerDetailResponse> response = result.stream().map(e -> mapper.travelerToTravelerDetailResponse(e)).collect(Collectors.toList());
+		List<Traveler> result = travelerService.findAll();
+		List<TravelerDetailResponse> response = result.stream().map(e -> travelerMapper.travelerToTravelerDetailResponse(e)).collect(Collectors.toList());
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 
@@ -79,119 +80,34 @@ public class TravelerController {
 			@ApiResponse(code = 200, message = "Atualização realizada com sucesso"),
 			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
 			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
-			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
+			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
 
 	@PutMapping("/{id}")
 	public ResponseEntity<TravelerDetailResponse> update(@PathVariable("id") Long id, @RequestBody UpdateTravelerRequest request) {
 
-		Traveler traveler = mapper.requestToUpdateTraveler(request);
-		Traveler updatedTraveler = service.updateTraveler(id,traveler);
-		TravelerDetailResponse response = mapper.travelerToTravelerDetailResponse(updatedTraveler);
+		Traveler traveler = travelerMapper.requestToUpdateTraveler(request);
+		Traveler updatedTraveler = travelerService.updateTraveler(id, traveler);
+		TravelerDetailResponse response = travelerMapper.travelerToTravelerDetailResponse(updatedTraveler);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
-//
-//	@ApiOperation(value = "Realiza busca paginada de todos viajantes cadastrados")
-//	@ApiResponses(value = { 
-//			@ApiResponse(code = 200, message = "Pesquisa retornou dados com sucesso"),
-//			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
-//			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
-//			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
-//	@GetMapping("/page")
-//	public ResponseEntity<PageModel<TravelerDTO>> findAllPaginated(@RequestParam Map<String, String> params) {
-//
-//		PageRequestModel pageRequestModel = new PageRequestModel(params);
-//
-//		PageModel<TravelerDTO> pageModel = travelerService.findAll(pageRequestModel);
-//
-//		return ResponseEntity.status(HttpStatus.OK).body(pageModel);
-//
-//	}
-//
-//	@ApiOperation(value = "Realiza pesquisa paginada de viajantes por nome")
-//	@ApiResponses(value = { 
-//			@ApiResponse(code = 200, message = "Pesquisa retornou dados com sucesso"),
-//			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
-//			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
-//			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
-//	@GetMapping("/search")
-//	public ResponseEntity<PageModel<TravelerDTO>> search(
-//					@RequestParam Map<String, String> params) {
-//
-//		String name = params.get("name") != null ? params.get("name") : "";
-//		
-//		PageRequestModel pageRequestModel = new PageRequestModel(params);
-//
-//		PageModel<TravelerDTO> result = travelerService.findByNameContainingOrderByNameAsc(name, pageRequestModel);
-//
-//		return ResponseEntity.status(HttpStatus.OK).body(result);
-//	}
-//
-//	
 
-//	
-//	@ApiOperation(value = "Realiza a exclusão de um viajante")
-//	@ApiResponses(value = { 
-//			@ApiResponse(code = 204, message = "Dados excluido com sucesso"),
-//			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
-//			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
-//			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
-//	@DeleteMapping("/{id}")
-//	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-//		
-//		travelerService.deleteById(id);
-//		
-//		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//	}
-//	
-//	@ApiOperation(value = "Realiza busca de todos viajantes cadastrados")
-//	@ApiResponses(value = { 
-//			@ApiResponse(code = 200, message = "Pesquisa retornou dados com sucesso"),
-//			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
-//			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
-//			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
-//	@GetMapping
-//	public ResponseEntity<List<TravelerDTO>> findAll() {
-//		
-//		List<Traveler> travelers = travelerService.findAllByOrderByName();
-//
-//		List<TravelerDTO> result = travelers.stream()
-//			.map(e -> e.convertToDTO())
-//			.collect(Collectors.toList());
-//		
-//		return ResponseEntity.status(HttpStatus.OK).body(result);
-//
-//	}
-//	
-//	@ApiOperation(value = "Realiza atualização do status do viajante")
-//	@ApiResponses(value = { 
-//			@ApiResponse(code = 200, message = "Atualização realizada com sucesso"),
-//			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
-//			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
-//			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
-//
-//	@PatchMapping("/{id}")
-//	public ResponseEntity<TravelerDTO> updateStatus(@PathVariable("id") Long id, @RequestBody TravelerDTO travelerDTO) {
-//
-//		Traveler travelerToUpdate = travelerDTO.convertToTraveler();
-//		travelerToUpdate.setId(id);
-//
-//		Traveler updatedTraveler = travelerService.updateStatus(travelerToUpdate);
-//
-//		return ResponseEntity.status(HttpStatus.OK).body(updatedTraveler.convertToDTO());
-//	}
-//
-//	@ApiOperation(value = "Realiza pesquisa de viajantes por nome")
-//	@ApiResponses(value = {
-//			@ApiResponse(code = 200, message = "Pesquisa retornou dados com sucesso"),
-//			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
-//			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
-//			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde") })
-//	@GetMapping("/find")
-//	public ResponseEntity<List<TravelerDTO>> findByName(@RequestParam String name) {
-//
-//		List<TravelerDTO> result = travelerService.findByNameContainingOrderByNameAsc(name);
-//
-//		return ResponseEntity.status(HttpStatus.OK).body(result);
-//	}
+	@ApiOperation(value = "Realiza pesquisa de viajantes por nome")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Pesquisa retornou dados com sucesso"),
+			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
+			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
+			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
+	@GetMapping("/find")
+	public ResponseEntity<List<TravelerDetailResponse>> findByName(@RequestParam String name) {
+
+		List<Traveler> result = travelerService.findByNameContainingOrderByNameAsc(name);
+
+		List<TravelerDetailResponse> response = result
+				.stream()
+				.map(traveler -> travelerMapper.travelerToTravelerDetailResponse(traveler))
+				.collect(Collectors.toList());
+
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
 }

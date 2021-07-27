@@ -10,4 +10,6 @@ import java.util.List;
 public interface TravelerRepository extends JpaRepository<Traveler, Long> {
 
     List<Traveler> findByNameOrEmail(String name, String email);
+
+    List<Traveler> findByNameContainingIgnoreCaseOrderByNameAsc(String name);
 }

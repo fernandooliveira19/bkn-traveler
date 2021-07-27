@@ -8,10 +8,7 @@ import com.fernando.oliveira.traveler.service.TravelerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TravelerServiceImpl implements TravelerService {
@@ -85,6 +82,11 @@ public class TravelerServiceImpl implements TravelerService {
         validate(travelerToUpdate);
 
         return repository.save(travelerToUpdate);
+    }
+
+    @Override
+    public List<Traveler> findByNameContainingOrderByNameAsc(String name) {
+        return repository.findByNameContainingIgnoreCaseOrderByNameAsc(name);
     }
 
 }
