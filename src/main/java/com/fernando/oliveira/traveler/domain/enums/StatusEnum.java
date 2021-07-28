@@ -1,13 +1,13 @@
 package com.fernando.oliveira.traveler.domain.enums;
 
-public enum Status {
+public enum StatusEnum {
 	ACTIVE("A","Ativo"),
 	INACTIVE("I","Inativo");
 	
 	private String code;
 	private String description;
 	
-	Status(String code, String description) {
+	StatusEnum(String code, String description) {
 	
 		this.code = code;
 		this.description = description;
@@ -21,15 +21,15 @@ public enum Status {
 		return description;
 	}
 	
-    public static Status toEnum(String code) {
+    public static StatusEnum toEnum(String code) {
 		
 		if(code == null){
 			return null;
 		}
 		
-		for(Status status: Status.values()) {
-			if(status.getCode().equals(code)) {
-				return status;
+		for(StatusEnum statusEnum : StatusEnum.values()) {
+			if(statusEnum.getCode().equals(code)) {
+				return statusEnum;
 			}
 		}
 		

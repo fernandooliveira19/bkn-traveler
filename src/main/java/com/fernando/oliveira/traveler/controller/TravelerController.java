@@ -83,7 +83,8 @@ public class TravelerController {
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
 
 	@PutMapping("/{id}")
-	public ResponseEntity<TravelerDetailResponse> update(@PathVariable("id") Long id, @RequestBody UpdateTravelerRequest request) {
+	public ResponseEntity<TravelerDetailResponse> update(
+			@PathVariable("id") Long id, @Valid  @RequestBody UpdateTravelerRequest request) {
 
 		Traveler traveler = travelerMapper.requestToUpdateTraveler(request);
 		Traveler updatedTraveler = travelerService.updateTraveler(id, traveler);

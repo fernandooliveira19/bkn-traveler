@@ -2,7 +2,7 @@ package com.fernando.oliveira.traveler.controller;
 
 import com.fernando.oliveira.traveler.domain.builder.ExceptionResponseBuilder;
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
-import com.fernando.oliveira.traveler.domain.enums.Status;
+import com.fernando.oliveira.traveler.domain.enums.StatusEnum;
 import com.fernando.oliveira.traveler.domain.mapper.TravelerMapper;
 import com.fernando.oliveira.traveler.domain.mother.TravelerMother;
 import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
@@ -55,7 +55,7 @@ public class TravelerControllerTest {
 		Traveler travelerToSave = TravelerMother.getTraveler();
 		Traveler travelerSaved = TravelerMother.getTraveler();
 		travelerSaved.setId(1234L);
-		travelerSaved.setStatus(Status.ACTIVE.getCode());
+		travelerSaved.setStatus(StatusEnum.ACTIVE.getCode());
 		TravelerDetailResponse response = TravelerMother.getCreateTravelerResponse();
 
 		Mockito.when(mapper.requestToCreateTraveler(Mockito.any(CreateTravelerRequest.class))).thenReturn(travelerToSave);
@@ -78,7 +78,7 @@ public class TravelerControllerTest {
 
 		Traveler travelerSaved = TravelerMother.getTraveler();
 		travelerSaved.setId(id);
-		travelerSaved.setStatus(Status.ACTIVE.getCode());
+		travelerSaved.setStatus(StatusEnum.ACTIVE.getCode());
 
 		TravelerDetailResponse response = TravelerMother.getDetailTravelerResponse();
 
@@ -98,7 +98,7 @@ public class TravelerControllerTest {
 
 		Traveler travelerSaved = TravelerMother.getTraveler();
 		travelerSaved.setId(1234L);
-		travelerSaved.setStatus(Status.ACTIVE.getCode());
+		travelerSaved.setStatus(StatusEnum.ACTIVE.getCode());
 
 		TravelerDetailResponse response = TravelerMother.getDetailTravelerResponse();
 

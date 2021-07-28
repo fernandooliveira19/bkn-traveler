@@ -1,12 +1,10 @@
 package com.fernando.oliveira.traveler.service;
 
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
-import com.fernando.oliveira.traveler.domain.enums.Status;
-import com.fernando.oliveira.traveler.domain.mother.TravelerMother;
+import com.fernando.oliveira.traveler.domain.enums.StatusEnum;
 import com.fernando.oliveira.traveler.exception.TravelerException;
 import com.fernando.oliveira.traveler.repository.TravelerRepository;
 import com.fernando.oliveira.traveler.service.impl.TravelerServiceImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,7 +36,7 @@ public class TravelerServiceTest {
 		
 		Traveler travelerToSave = getTraveler();
 		Traveler travelerSaved = getTraveler();
-		travelerSaved.setStatus(Status.ACTIVE.getCode());
+		travelerSaved.setStatus(StatusEnum.ACTIVE.getCode());
 		travelerSaved.setId(123L);
 		
 		when(repository.save(travelerToSave)).thenReturn(travelerSaved);
@@ -50,7 +48,7 @@ public class TravelerServiceTest {
 		assertEquals(travelerToSave.getName(),result.getName() );
 		assertEquals(travelerToSave.getEmail(), result.getEmail() );
 
-		assertEquals(Status.ACTIVE.getCode(), result.getStatus());
+		assertEquals(StatusEnum.ACTIVE.getCode(), result.getStatus());
 		assertEquals(travelerToSave.getPrefixPhone(), result.getPrefixPhone());
 		assertEquals(travelerToSave.getNumberPhone(),result.getNumberPhone() );
 		
@@ -77,7 +75,7 @@ public class TravelerServiceTest {
 		Long id = 1234L;
 		Traveler traveler = getTraveler();
 		traveler.setId(id);
-		traveler.setStatus(Status.ACTIVE.getCode());
+		traveler.setStatus(StatusEnum.ACTIVE.getCode());
 
 
 		when(repository.findById(id)).thenReturn(Optional.of(traveler));
@@ -98,7 +96,7 @@ public class TravelerServiceTest {
 	public void shouldReturnAllTravelers(){
 		Traveler traveler = getTraveler();
 		traveler.setId(1234L);
-		traveler.setStatus(Status.ACTIVE.getCode());
+		traveler.setStatus(StatusEnum.ACTIVE.getCode());
 
 		when(repository.findAll()).thenReturn(Arrays.asList(traveler));
 
@@ -134,7 +132,7 @@ public class TravelerServiceTest {
 
 		Long id = 123L;
 		Traveler travelerToUpdate = getTraveler();
-		travelerToUpdate.setStatus(Status.ACTIVE.getCode());
+		travelerToUpdate.setStatus(StatusEnum.ACTIVE.getCode());
 		travelerToUpdate.setId(id);
 
 		Traveler travelerUpdated = getTravelerUpdated();

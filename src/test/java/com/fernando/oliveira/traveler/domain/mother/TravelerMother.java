@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
-import com.fernando.oliveira.traveler.domain.enums.Status;
+import com.fernando.oliveira.traveler.domain.enums.StatusEnum;
 import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
 import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
 
@@ -76,7 +76,7 @@ public class TravelerMother {
 				.document(TRAVELER_DOCUMENT)
 				.prefixPhone(PREFIX_PHONE)
 				.numberPhone(NUMBER_PHONE)
-				.status(Status.ACTIVE.getCode())
+				.status(StatusEnum.ACTIVE.getCode())
 				.build();
 	}
 
@@ -97,7 +97,7 @@ public class TravelerMother {
 				.name("Giovanna")
 		.email("gigiovanna1209@gmail.com")
 		.document("12345")
-				.status(Status.ACTIVE.getCode())
+				.status(StatusEnum.ACTIVE.getCode())
 		.prefixPhone(11)
 				.numberPhone("988887777").build();
 

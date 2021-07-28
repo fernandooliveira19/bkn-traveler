@@ -1,7 +1,7 @@
 package com.fernando.oliveira.traveler.service.impl;
 
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
-import com.fernando.oliveira.traveler.domain.enums.Status;
+import com.fernando.oliveira.traveler.domain.enums.StatusEnum;
 import com.fernando.oliveira.traveler.exception.TravelerException;
 import com.fernando.oliveira.traveler.repository.TravelerRepository;
 import com.fernando.oliveira.traveler.service.TravelerService;
@@ -20,7 +20,7 @@ public class TravelerServiceImpl implements TravelerService {
 
     public Traveler createTraveler(Traveler traveler) {
         validate(traveler);
-        traveler.setStatus(Status.ACTIVE.getCode());
+        traveler.setStatus(StatusEnum.ACTIVE.getCode());
 
         return repository.save(traveler);
 
