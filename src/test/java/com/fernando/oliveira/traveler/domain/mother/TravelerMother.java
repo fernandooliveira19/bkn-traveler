@@ -25,7 +25,7 @@ public class TravelerMother {
 	
 
 	private static final Integer PREFIX_PHONE= 11;
-	private static final String NUMBER_PHONE = "98888-7777";
+	private static final String NUMBER_PHONE = "988887777";
 	
 	public static CreateTravelerRequest getCreateTravelerRequest() {
 		CreateTravelerRequest request = new CreateTravelerRequest();
