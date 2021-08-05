@@ -33,7 +33,7 @@ public class TravelerRequest {
     private Integer prefixPhone;
 
     @ApiModelProperty(name="numberPhone", value="Numero do telefone", example = "988887777", required = true)
-    @Size(min=8, max = 9, message = "Telefone inválido")
+    @Size(min=9, max = 10, message = "Telefone inválido")
     @NotBlank(message = "Telefone é obrigatório")
     private String numberPhone;
 }
