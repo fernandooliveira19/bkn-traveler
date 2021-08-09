@@ -19,4 +19,6 @@ public interface TravelerService {
     Traveler updateTraveler(Long id, Traveler traveler);
 
 	List<Traveler> findByNameContainingOrderByNameAsc(String name);
+
+	void inactivateTraveler(Long id);
 }

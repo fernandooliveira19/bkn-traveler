@@ -89,4 +89,11 @@ public class TravelerServiceImpl implements TravelerService {
         return repository.findByNameContainingIgnoreCaseOrderByNameAsc(name);
     }
 
+    @Override
+    public void inactivateTraveler(Long id) {
+        Traveler traveler = findById(id);
+        traveler.setStatus(StatusEnum.INACTIVE.getCode());
+        repository.save(traveler);
+    }
+
 }

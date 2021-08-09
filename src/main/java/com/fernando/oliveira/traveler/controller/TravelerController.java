@@ -111,4 +111,18 @@ public class TravelerController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
+
+	@ApiOperation(value = "Realiza inativação de viajante pelo identificador")
+	@ApiResponses(value = {
+			@ApiResponse(code = 204, message = "Viajante inativado com sucesso"),
+			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
+			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
+	@PutMapping("/{id}/inactive")
+	public ResponseEntity<Void> inactivateTraveler(@PathVariable("id") Long id) {
+
+		travelerService.inactivateTraveler(id);
+
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+	}
 }
