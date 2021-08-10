@@ -82,12 +82,11 @@ public class TravelerController {
 			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
 
-	@PutMapping("/update/{id}")
-	public ResponseEntity<TravelerDetailResponse> update(
-			@PathVariable("id") Long id, @Valid  @RequestBody UpdateTravelerRequest request) {
+	@PutMapping("/update")
+	public ResponseEntity<TravelerDetailResponse> update(@Valid  @RequestBody UpdateTravelerRequest request) {
 
 		Traveler traveler = travelerMapper.requestToUpdateTraveler(request);
-		Traveler updatedTraveler = travelerService.updateTraveler(id, traveler);
+		Traveler updatedTraveler = travelerService.updateTraveler(traveler.getId(), traveler);
 		TravelerDetailResponse response = travelerMapper.travelerToTravelerDetailResponse(updatedTraveler);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);

@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TravelerControllerTest {
 	
 	private static final String BASE_MAPPING = "/v1/travelers";
-	private static final String CREATE_TRAVELER = BASE_MAPPING ;
+	private static final String CREATE_TRAVELER = BASE_MAPPING +"/create" ;
 	
 	@Autowired
 	MockMvc mockMvc;
