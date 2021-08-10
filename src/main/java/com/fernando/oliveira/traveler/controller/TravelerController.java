@@ -37,7 +37,7 @@ public class TravelerController {
 			@ApiResponse(code = 400, message = "Dados de cadastro inválidos"),
 			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
-	@PostMapping
+	@PostMapping("/create")
 	public ResponseEntity<TravelerDetailResponse> createTraveler(@RequestBody @Valid CreateTravelerRequest request) {
 
 		Traveler travelerCreated = travelerService.createTraveler(travelerMapper.requestToCreateTraveler(request));
@@ -82,7 +82,7 @@ public class TravelerController {
 			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
 
-	@PutMapping("/{id}")
+	@PutMapping("/update/{id}")
 	public ResponseEntity<TravelerDetailResponse> update(
 			@PathVariable("id") Long id, @Valid  @RequestBody UpdateTravelerRequest request) {
 
