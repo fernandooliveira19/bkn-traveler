@@ -124,4 +124,22 @@ public class TravelerController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
 	}
+
+	@ApiOperation(value = "Realiza busca de todos viajantes ativos")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Viajantes retornados com sucesso"),
+			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
+			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
+	@GetMapping("/actives/")
+	public ResponseEntity<List<TravelerDetailResponse>> findAllActive() {
+
+		List<Traveler> result = travelerService.findActiveTravelers();
+		List<TravelerDetailResponse> response = result
+				.stream()
+				.map(e -> travelerMapper.travelerToTravelerDetailResponse(e))
+				.collect(Collectors.toList());
+
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+
+	}
 }

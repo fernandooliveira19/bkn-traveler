@@ -21,4 +21,6 @@ public interface TravelerService {
 	List<Traveler> findByNameContainingOrderByNameAsc(String name);
 
 	void inactivateTraveler(Long id);
+
+	List<Traveler> findActiveTravelers();
 }

@@ -2,7 +2,6 @@ package com.fernando.oliveira.traveler.domain.mapper;
 
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
 import com.fernando.oliveira.traveler.domain.request.CreateTravelerRequest;
-import com.fernando.oliveira.traveler.domain.request.TravelerRequest;
 import com.fernando.oliveira.traveler.domain.request.UpdateTravelerRequest;
 import com.fernando.oliveira.traveler.domain.response.TravelerDetailResponse;
 import org.mapstruct.Mapper;

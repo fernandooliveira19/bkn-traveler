@@ -5,10 +5,14 @@ import com.fernando.oliveira.traveler.domain.enums.StatusEnum;
 import com.fernando.oliveira.traveler.exception.TravelerException;
 import com.fernando.oliveira.traveler.repository.TravelerRepository;
 import com.fernando.oliveira.traveler.service.TravelerService;
+import com.fernando.oliveira.traveler.utils.FormatterUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.fernando.oliveira.traveler.utils.FormatterUtils.*;
 
 @Service
 public class TravelerServiceImpl implements TravelerService {
@@ -19,12 +23,16 @@ public class TravelerServiceImpl implements TravelerService {
 
 
     public Traveler createTraveler(Traveler traveler) {
+
+        formatFields(traveler);
         validate(traveler);
         traveler.setStatus(StatusEnum.ACTIVE.getCode());
 
         return repository.save(traveler);
 
     }
+
+
 
     private void validate(Traveler traveler) {
         List<Traveler> travelers = findTravelersByNameOrEmail(traveler.getName(), traveler.getEmail());
@@ -78,8 +86,9 @@ public class TravelerServiceImpl implements TravelerService {
         travelerToUpdate.setStatus(traveler.getStatus());
         travelerToUpdate.setPrefixPhone(traveler.getPrefixPhone());
         travelerToUpdate.setNumberPhone(traveler.getNumberPhone());
-
+        formatFields(travelerToUpdate);
         validate(travelerToUpdate);
+
 
         return repository.save(travelerToUpdate);
     }
@@ -94,6 +103,20 @@ public class TravelerServiceImpl implements TravelerService {
         Traveler traveler = findById(id);
         traveler.setStatus(StatusEnum.INACTIVE.getCode());
         repository.save(traveler);
+    }
+
+    @Override
+    public List<Traveler> findActiveTravelers() {
+        return repository.findActiveTravelers();
+    }
+
+    private void formatFields(Traveler traveler) {
+
+        if (!StringUtils.isEmpty(traveler.getDocument())){
+            traveler.setDocument(formatCpf(traveler.getDocument()));
+        }
+
+        traveler.setNumberPhone(formatPhoneNumber(traveler.getNumberPhone()));
     }
 
 }
