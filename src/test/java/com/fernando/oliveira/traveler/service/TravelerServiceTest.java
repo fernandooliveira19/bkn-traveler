@@ -2,9 +2,11 @@ package com.fernando.oliveira.traveler.service;
 
 import com.fernando.oliveira.traveler.domain.entity.Traveler;
 import com.fernando.oliveira.traveler.domain.enums.StatusEnum;
+import com.fernando.oliveira.traveler.domain.mother.TravelerMother;
 import com.fernando.oliveira.traveler.exception.TravelerException;
 import com.fernando.oliveira.traveler.repository.TravelerRepository;
 import com.fernando.oliveira.traveler.service.impl.TravelerServiceImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,8 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.fernando.oliveira.traveler.domain.mother.TravelerMother.getTraveler;
-import static com.fernando.oliveira.traveler.domain.mother.TravelerMother.getTravelerUpdated;
+import static com.fernando.oliveira.traveler.domain.mother.TravelerMother.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -35,9 +36,8 @@ public class TravelerServiceTest {
 	public void shouldCreateTravelerAndReturnTravelerDetails() {
 		
 		Traveler travelerToSave = getTraveler();
-		Traveler travelerSaved = getTraveler();
-		travelerSaved.setStatus(StatusEnum.ACTIVE.getCode());
-		travelerSaved.setId(123L);
+		Traveler travelerSaved = getTravelerSaved();
+
 		
 		when(repository.save(travelerToSave)).thenReturn(travelerSaved);
 
@@ -171,6 +171,47 @@ public class TravelerServiceTest {
 
 	}
 
+	@Test
+	public void shouldReturnExceptionWhenCreateTravelerAlreadyExistsWithSameName() {
 
+		Traveler travelerToSave = TravelerMother.getTraveler();
+		Traveler travelerSaved = TravelerMother.getTravelerSaved();
+		when(repository.findByNameOrEmail(Mockito.anyString(), Mockito.anyString()))
+				.thenReturn(Arrays.asList(travelerSaved));
+
+		Exception exception = assertThrows(TravelerException.class, () ->{
+			travelerService.createTraveler(travelerToSave);
+		});
+
+		assertEquals(exception.getMessage(), "Já existe outro viajante cadastrado com mesmo nome ou email" );
+	}
+
+	@Test
+	public void shouldReturnExceptionWhenUpdateTravelerAlreadyExistsWithSameName() {
+
+		Traveler travelerToUpdate = TravelerMother.getTraveler();
+		travelerToUpdate.setId(123L);
+		Traveler travelerSaved = TravelerMother.getTravelerSaved();
+		when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(travelerToUpdate));
+
+		when(repository.findByNameOrEmail(Mockito.anyString(), Mockito.anyString()))
+				.thenReturn(Arrays.asList(travelerSaved));
+
+		Exception exception = assertThrows(TravelerException.class, () ->{
+			travelerService.updateTraveler(travelerToUpdate.getId(), travelerToUpdate);
+		});
+
+		assertEquals(exception.getMessage(), "Já existe outro viajante cadastrado com mesmo nome ou email" );
+	}
+
+	@Test
+	public void givenNameWhenFindByNameThenReturnListOfTravelers(){
+		List<Traveler> travelers = TravelerMother.getTravelerList();
+		when(repository.findByNameContainingIgnoreCaseOrderByNameAsc(Mockito.anyString())).thenReturn(travelers);
+		String name = "travelerName";
+		List<Traveler> result = travelerService.findByNameContainingOrderByNameAsc(name);
+
+		Assertions.assertNotNull(result);
+	}
 
 }

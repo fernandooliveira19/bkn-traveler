@@ -2,6 +2,7 @@ package com.fernando.oliveira.traveler.config;
 
 import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -18,10 +19,16 @@ public class SwaggerConfig {
 
 	private static final String BASE_PACKAGE = "com.fernando.oliveira.traveler";
 	private static final String REQUEST_MAPPING = "/v1/travelers/**";
-	private static final String TITLE = "API de gerenciamento de viajantes";
-	private static final String DESCRIPTION = "API que contém endpoints de cadastro, edição, busca e exclusão de viajantes";
-	private static final String VERSION = "";
-	
+
+	@Value(value = "${info.app.name}")
+	private String projectName;
+
+	@Value(value = "${info.app.description}")
+	private String projectDescription;
+
+	@Value(value = "${info.app.version}")
+	private String projectVersion;
+
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
@@ -37,9 +44,9 @@ public class SwaggerConfig {
 	
 	private ApiInfo getApiInfo() {
 		return new ApiInfoBuilder()
-				.title(TITLE)
-				.description(DESCRIPTION)
-				.version(VERSION)
+				.title(projectName)
+				.description(projectDescription)
+				.version(projectVersion)
 				.build();
 	}
 }

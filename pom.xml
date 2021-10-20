@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>com.fernando.oliveira</groupId>
 	<artifactId>bkn-traveler</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>bkn-traveler</name>
-	<description>Project Traveler for Booking Project</description>
+	<description>API que contém endpoints de cadastro, edição, busca e exclusão de viajantes</description>
 
 	<properties>
 		<java.version>11</java.version>

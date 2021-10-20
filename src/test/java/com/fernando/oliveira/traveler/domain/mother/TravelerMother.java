@@ -25,7 +25,7 @@ public class TravelerMother {
 	
 
 	private static final Integer PREFIX_PHONE= 11;
-	private static final String NUMBER_PHONE = "988887777";
+	private static final String NUMBER_PHONE = "98888-7777";
 	
 	public static CreateTravelerRequest getCreateTravelerRequest() {
 		CreateTravelerRequest request = new CreateTravelerRequest();
@@ -68,6 +68,18 @@ public class TravelerMother {
 				.build();
 	}
 
+	public static Traveler getTravelerSaved(){
+		return Traveler.builder()
+				.id(TRAVELER_ID)
+				.name(TRAVELER_NAME)
+				.email(TRAVELER_EMAIL)
+				.document(TRAVELER_DOCUMENT)
+				.prefixPhone(PREFIX_PHONE)
+				.numberPhone(NUMBER_PHONE)
+				.status(StatusEnum.ACTIVE.getCode())
+				.build();
+	}
+
 	public static Traveler getTravelerUpdated(){
 		return Traveler.builder()
 				.id(TRAVELER_ID)
@@ -90,18 +102,18 @@ public class TravelerMother {
 
 		return response;
     }
-    
-    public static List<Traveler> getTravelerList(){
+
+	public static List<Traveler> getTravelerList() {
 		Traveler traveler01 = getTraveler();
 		Traveler traveler02 = Traveler.builder()
 				.name("Giovanna")
-		.email("gigiovanna1209@gmail.com")
-		.document("12345")
+				.email("giovanna1209@gmail.com")
+				.document("12345")
 				.status(StatusEnum.ACTIVE.getCode())
-		.prefixPhone(11)
-				.numberPhone("988887777").build();
+				.prefixPhone(12)
+				.numberPhone("98888-6666").build();
 
 		return Arrays.asList(traveler01, traveler02);
-		
+
 	}
 }

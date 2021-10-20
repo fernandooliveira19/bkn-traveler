@@ -34,3 +34,9 @@ feign:
       enabled: false
     okhttp:
       enabled: true
+
+info:
+  app:
+    name: '@project.name@'
+    description: '@project.description@'
+    version: '@project.version@'
