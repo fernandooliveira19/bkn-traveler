@@ -32,8 +32,8 @@ public class TravelerRequest {
     @NotNull(message = "DDD é obrigatório")
     private Integer prefixPhone;
 
-    @ApiModelProperty(name="numberPhone", value="Numero do telefone", example = "988887777", required = true)
-    @Size(min=9, max = 10, message = "Telefone inválido")
+    @ApiModelProperty(name="numberPhone", value="Numero do telefone", example = "98888-7777", required = true)
+    @Size(min=10, max = 10, message = "Telefone inválido")
     @NotBlank(message = "Telefone é obrigatório")
     private String numberPhone;
 }

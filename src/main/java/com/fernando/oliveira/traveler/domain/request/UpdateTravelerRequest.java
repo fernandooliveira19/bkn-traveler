@@ -23,7 +23,7 @@ public class UpdateTravelerRequest  extends TravelerRequest implements Serializa
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(name="id", value="Id do viajante", example="1")
+	@ApiModelProperty(name="id", value="Id do viajante", example="1", required = true)
 	@NotNull(message = "Id é obrigatório")
 	private Long id;
 

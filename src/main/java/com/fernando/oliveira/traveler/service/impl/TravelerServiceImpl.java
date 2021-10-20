@@ -88,8 +88,6 @@ public class TravelerServiceImpl implements TravelerService {
         travelerToUpdate.setNumberPhone(traveler.getNumberPhone());
         formatFields(travelerToUpdate);
         validate(travelerToUpdate);
-
-
         return repository.save(travelerToUpdate);
     }
 

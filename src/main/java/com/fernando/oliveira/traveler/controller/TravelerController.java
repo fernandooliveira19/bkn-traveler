@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Api(tags="Traveler endpoint")
+@Api(tags="Viajantes")
 @RestController
 @RequestMapping(value = "/v1/travelers")
 public class TravelerController {
@@ -37,7 +37,7 @@ public class TravelerController {
 			@ApiResponse(code = 400, message = "Dados de cadastro inválidos"),
 			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
-	@PostMapping("/create")
+	@PostMapping
 	public ResponseEntity<TravelerDetailResponse> createTraveler(@RequestBody @Valid CreateTravelerRequest request) {
 
 		Traveler travelerCreated = travelerService.createTraveler(travelerMapper.requestToCreateTraveler(request));
@@ -82,7 +82,7 @@ public class TravelerController {
 			@ApiResponse(code = 404, message = "Pesquisa não retornou resultados"),
 			@ApiResponse(code = 500, message = "Ocorreu algum erro inesperado. Tente novamente mais tarde")})
 
-	@PutMapping("/update")
+	@PutMapping
 	public ResponseEntity<TravelerDetailResponse> update(@Valid  @RequestBody UpdateTravelerRequest request) {
 
 		Traveler traveler = travelerMapper.requestToUpdateTraveler(request);
@@ -92,7 +92,7 @@ public class TravelerController {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
-	@ApiOperation(value = "Realiza pesquisa de viajantes por nome")
+	@ApiOperation(value = "Realiza pesquisa de viajantes pelo nome")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Pesquisa retornou dados com sucesso"),
 			@ApiResponse(code = 403, message = "Você não possui permissão para acessar esse recurso"),

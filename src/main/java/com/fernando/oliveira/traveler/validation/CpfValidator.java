@@ -33,6 +33,9 @@ public class CpfValidator implements ConstraintValidator<Cpf, String> {
         char dig11 = calculateVerifyDigit(value, 11, 10);
         return (dig10 == value.charAt(9)) && (dig11 == value.charAt(10));
     }
+
+
+
     private static char calculateVerifyDigit(String cpf, int weight, int counter){
         int sum = 0;
         int result;

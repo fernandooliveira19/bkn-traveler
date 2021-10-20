@@ -33,7 +33,8 @@ public class FormatterUtils {
 
     public static String formatPhoneNumber(String phoneNumber){
         try {
-            String phoneNumberFormatted = Normalizer.normalize(phoneNumber, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+//            String phoneNumberFormatted = Normalizer.normalize(phoneNumber, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+            String phoneNumberFormatted = phoneNumber.replaceAll("-", "").replaceAll(" ", "");
             MaskFormatter mask = new MaskFormatter(PHONE_MASK);
             mask.setValueContainsLiteralCharacters(false);
             return mask.valueToString(phoneNumberFormatted);

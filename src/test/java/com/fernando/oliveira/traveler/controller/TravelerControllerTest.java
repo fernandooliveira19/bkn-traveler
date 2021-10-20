@@ -26,12 +26,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-//@SpringBootTest
 @WebMvcTest(controllers = TravelerController.class)
 public class TravelerControllerTest {
 	
 	private static final String BASE_MAPPING = "/v1/travelers";
-	private static final String CREATE_TRAVELER = BASE_MAPPING +"/create" ;
+
 	
 	@Autowired
 	MockMvc mockMvc;
@@ -63,7 +62,7 @@ public class TravelerControllerTest {
 		Mockito.when(mapper.travelerToTravelerDetailResponse(Mockito.any(Traveler.class))).thenReturn(response);
 
 		String requestJson = TravelerMother.getCreateRequestJsonValue(request);
-		mockMvc.perform(post(CREATE_TRAVELER)
+		mockMvc.perform(post(BASE_MAPPING)
 				.header("Content-Type", ContentType.APPLICATION_JSON)
 				.content(requestJson))
 				.andExpect(status().isCreated())
